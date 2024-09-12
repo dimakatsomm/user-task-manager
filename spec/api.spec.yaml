@@ -1,0 +1,384 @@
+openapi: 3.0.3
+info:
+  title: User Task Manager API
+  version: 1.0.0
+  description: A simple API to manage users and tasks.
+  contact:
+    name: Dimakatso
+    email: dimakatsomm@icloud.com
+servers:
+  - url: http://localhost:3000
+    description: Local server
+
+tags:
+  - name: user
+    description: Endpoints related to user operations
+  - name: task
+    description: Endpoints related to task operations
+
+paths:
+  /users:
+    post:
+      tags:
+        - user
+      summary: Create a user
+      description: Create a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+        required: true
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+    get:
+      tags:
+        - user
+      summary: Get all users
+      description: List all users in the system with optional search queries
+      parameters:
+        - in: query
+          name: username
+          schema:
+            type: string
+          description: Search by username
+        - in: query
+          name: firstName
+          schema:
+            type: string
+          description: Search by first name
+        - in: query
+          name: lastName
+          schema:
+            type: string
+          description: Search by last name
+      responses:
+        '200':
+          description: List of users (filtered if query parameters are provided)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+  /users/{userId}:
+    get:
+      tags:
+        - user
+      summary: Get user by ID
+      description: Get a specific user's details
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+    put:
+      tags:
+        - user
+      summary: Update a user
+      description: Update a user's details by ID
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+        required: true
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+  /users/{userId}/tasks:
+    post:
+      tags:
+        - user
+      summary: Create a task for a user
+      description: Create a new task for the specified user
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTaskDto'
+        required: true
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+    get:
+      tags:
+        - user
+      summary: Get tasks for a user
+      description: List all tasks for a specific user
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: List of tasks for the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        '404':
+          description: No tasks found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+  /users/{userId}/tasks/{taskId}:
+    get:
+      tags:
+        - user
+      summary: Get a task by ID
+      description: Get details of a specific task for a user
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '200':
+          description: Task found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+    put:
+      tags:
+        - user
+      summary: Update a task
+      description: Update a specific task for a user
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTaskDto'
+        required: true
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+    delete:
+      tags:
+        - user
+      summary: Delete a task
+      description: Delete a specific task for a user
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '204':
+          description: Task deleted successfully
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+  /tasks:
+    get:
+      tags:
+        - task
+      summary: Get all tasks
+      description: List all tasks in the system with optional search queries
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Search tasks by name
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - PENDING
+              - IN PROGRESS
+              - DONE
+          description: Filter tasks by status (PENDING, IN PROGRESS, DONE)
+      responses:
+        '200':
+          description: List of tasks (filtered if query parameters are provided)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+components:
+  schemas:
+    CreateUserDto:
+      type: object
+      required:
+        - username
+        - firstName
+        - lastName
+      properties:
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+
+    UpdateUserDto:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+
+    CreateTaskDto:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+
+    UpdateTaskDto:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - PENDING
+            - IN PROGRESS
+            - DONE
+
+    ErrorDto:
+      type: object
+      properties:
+        status:
+          type: boolean
+          default: false
+        message:
+          type: string
+
+  parameters:
+    userId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+    taskId:
+      name: taskId
+      in: path
+      required: true
+      schema:
+        type: string
