@@ -29,6 +29,7 @@
     "reflect-metadata": "^0.2.1",
     "swagger-ui-express": "^5.0.0",
     "typedi": "^0.10.0",
+    "user-task-manager-client": "file:user-task-manager-client",
     "validator": "^13.11.0",
     "winston": "^3.12.0"
   },
