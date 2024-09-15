@@ -13,7 +13,7 @@ import * as C from './constants';
 
 const app = express();
 const redisClient = createClient({
-  password: C.REDIS_PASSWORD,
+  auth_pass: C.REDIS_PASSWORD,
   socket: {
     host: C.REDIS_HOST,
     port: C.REDIS_PORT,
