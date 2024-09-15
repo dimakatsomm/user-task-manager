@@ -12,7 +12,7 @@
     "watch:server": "nodemon '../dist/index.js' --watch '../dist'",
     "lint": "eslint . --ext .ts",
     "lint:fix": "npm run lint -- --fix",
-    "preinstall": "cd user-task-manager-client && npm i & npm run build"
+    "preinstall": "cd user-task-manager-client && npm i && npm run build"
   },
   "keywords": [],
   "author": "Dimakatso Makgatho <dimakatsomm@icloud.com>",
