@@ -1,7 +1,7 @@
 {
-  "name": "user-task-manager-client",
+  "name": "",
   "version": "1.0.0",
-  "description": "OpenAPI client for User Task Manager Client",
+  "description": "OpenAPI client for ",
   "author": "OpenAPI-Generator Contributors",
   "keywords": [
     "axios",

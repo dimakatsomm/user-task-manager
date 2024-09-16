@@ -17,8 +17,10 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { CreateTaskDto } from '../models';
 import { ErrorDto } from '../models';
 import { Task } from '../models';
+import { TaskIdAssignBody } from '../models';
 /**
  * TaskApi - axios parameter creator
  * @export
@@ -69,6 +71,138 @@ export const TaskApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Create a new task
+         * @summary Create a task
+         * @param {CreateTaskDto} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tasksPost: async (body: CreateTaskDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling tasksPost.');
+            }
+            const localVarPath = `/tasks`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Assign a specific task to a user
+         * @summary Assign a task
+         * @param {TaskIdAssignBody} body 
+         * @param {string} taskId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tasksTaskIdAssignPut: async (body: TaskIdAssignBody, taskId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling tasksTaskIdAssignPut.');
+            }
+            // verify required parameter 'taskId' is not null or undefined
+            if (taskId === null || taskId === undefined) {
+                throw new RequiredError('taskId','Required parameter taskId was null or undefined when calling tasksTaskIdAssignPut.');
+            }
+            const localVarPath = `/tasks/{taskId}/assign`
+                .replace(`{${"taskId"}}`, encodeURIComponent(String(taskId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Complete a specific task
+         * @summary Complete a task
+         * @param {string} taskId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tasksTaskIdCompletePut: async (taskId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'taskId' is not null or undefined
+            if (taskId === null || taskId === undefined) {
+                throw new RequiredError('taskId','Required parameter taskId was null or undefined when calling tasksTaskIdCompletePut.');
+            }
+            const localVarPath = `/tasks/{taskId}/complete`
+                .replace(`{${"taskId"}}`, encodeURIComponent(String(taskId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -88,6 +222,49 @@ export const TaskApiFp = function(configuration?: Configuration) {
          */
         async tasksGet(name?: string, status?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Task>>>> {
             const localVarAxiosArgs = await TaskApiAxiosParamCreator(configuration).tasksGet(name, status, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * Create a new task
+         * @summary Create a task
+         * @param {CreateTaskDto} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tasksPost(body: CreateTaskDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Task>>> {
+            const localVarAxiosArgs = await TaskApiAxiosParamCreator(configuration).tasksPost(body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * Assign a specific task to a user
+         * @summary Assign a task
+         * @param {TaskIdAssignBody} body 
+         * @param {string} taskId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tasksTaskIdAssignPut(body: TaskIdAssignBody, taskId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Task>>> {
+            const localVarAxiosArgs = await TaskApiAxiosParamCreator(configuration).tasksTaskIdAssignPut(body, taskId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * Complete a specific task
+         * @summary Complete a task
+         * @param {string} taskId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tasksTaskIdCompletePut(taskId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Task>>> {
+            const localVarAxiosArgs = await TaskApiAxiosParamCreator(configuration).tasksTaskIdCompletePut(taskId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -113,6 +290,37 @@ export const TaskApiFactory = function (configuration?: Configuration, basePath?
         async tasksGet(name?: string, status?: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Task>>> {
             return TaskApiFp(configuration).tasksGet(name, status, options).then((request) => request(axios, basePath));
         },
+        /**
+         * Create a new task
+         * @summary Create a task
+         * @param {CreateTaskDto} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tasksPost(body: CreateTaskDto, options?: AxiosRequestConfig): Promise<AxiosResponse<Task>> {
+            return TaskApiFp(configuration).tasksPost(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Assign a specific task to a user
+         * @summary Assign a task
+         * @param {TaskIdAssignBody} body 
+         * @param {string} taskId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tasksTaskIdAssignPut(body: TaskIdAssignBody, taskId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Task>> {
+            return TaskApiFp(configuration).tasksTaskIdAssignPut(body, taskId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Complete a specific task
+         * @summary Complete a task
+         * @param {string} taskId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tasksTaskIdCompletePut(taskId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Task>> {
+            return TaskApiFp(configuration).tasksTaskIdCompletePut(taskId, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -134,5 +342,39 @@ export class TaskApi extends BaseAPI {
      */
     public async tasksGet(name?: string, status?: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Task>>> {
         return TaskApiFp(this.configuration).tasksGet(name, status, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Create a new task
+     * @summary Create a task
+     * @param {CreateTaskDto} body 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TaskApi
+     */
+    public async tasksPost(body: CreateTaskDto, options?: AxiosRequestConfig) : Promise<AxiosResponse<Task>> {
+        return TaskApiFp(this.configuration).tasksPost(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Assign a specific task to a user
+     * @summary Assign a task
+     * @param {TaskIdAssignBody} body 
+     * @param {string} taskId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TaskApi
+     */
+    public async tasksTaskIdAssignPut(body: TaskIdAssignBody, taskId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Task>> {
+        return TaskApiFp(this.configuration).tasksTaskIdAssignPut(body, taskId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Complete a specific task
+     * @summary Complete a task
+     * @param {string} taskId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TaskApi
+     */
+    public async tasksTaskIdCompletePut(taskId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Task>> {
+        return TaskApiFp(this.configuration).tasksTaskIdCompletePut(taskId, options).then((request) => request(this.axios, this.basePath));
     }
 }

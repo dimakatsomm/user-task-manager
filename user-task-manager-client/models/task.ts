@@ -30,6 +30,12 @@ export interface Task {
      * @type {string}
      * @memberof Task
      */
+    username?: string;
+
+    /**
+     * @type {string}
+     * @memberof Task
+     */
     name?: string;
 
     /**
@@ -37,12 +43,6 @@ export interface Task {
      * @memberof Task
      */
     description?: string;
-
-    /**
-     * @type {Date}
-     * @memberof Task
-     */
-    createdAt?: Date;
 
     /**
      * @type {string}

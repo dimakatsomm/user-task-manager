@@ -230,6 +230,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
 
     delete:
       tags:
@@ -242,6 +248,12 @@ paths:
       responses:
         '204':
           description: Task deleted successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
         '404':
           description: Task not found
           content:
@@ -285,6 +297,95 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDto'
+    post:
+      tags:
+        - task
+      summary: Create a task
+      description: Create a new task
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTaskDto'
+        required: true
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
+  /tasks/{taskId}/assign:
+    put:
+      tags:
+        - task
+      summary: Assign a task
+      description: Assign a specific task to a user
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Username'
+                - $ref: '#/components/schemas/UserId'
+        required: true
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+    
+  /tasks/{taskId}/complete:
+    put:
+      tags:
+        - task
+      summary: Complete a task
+      description: Complete a specific task
+      parameters:
+        - $ref: '#/components/parameters/taskId'
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+
 
 components:
   schemas:
@@ -315,6 +416,7 @@ components:
       properties:
         id:
           type: string
+          format: uuid
         username:
           type: string
         firstName:
@@ -346,13 +448,13 @@ components:
       properties:
         id:
           type: string
+          format: uuid
+        username:
+          type: string
         name:
           type: string
         description:
           type: string
-        createdAt:
-          type: string
-          format: date-time
         status:
           type: string
           enum:
@@ -369,6 +471,19 @@ components:
         message:
           type: string
 
+    Username:
+      type: object
+      properties:
+        username: 
+          type: string
+
+    UserId:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+
   parameters:
     userId:
       name: userId
@@ -376,9 +491,11 @@ components:
       required: true
       schema:
         type: string
+        format: uuid
     taskId:
       name: taskId
       in: path
       required: true
       schema:
         type: string
+        format: uuid
